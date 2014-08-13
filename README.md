@@ -1,4 +1,3 @@
 hDHT
 ====
-
-Haskell implementation of the BitTorrent DHT
+(Work in progress) Haskell implementation of the BitTorrent DHT
