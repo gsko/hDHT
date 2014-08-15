@@ -19,12 +19,19 @@ executable hDHT
   main-is:             Main.hs
   -- other-modules:       
   -- other-extensions:    
+  default-extensions:  OverloadedStrings
   build-depends:       base >=4.7 && <4.8
   hs-source-dirs:      ./
   default-language:    Haskell2010
 
-executable tests
+Test-suite reference
+  type:                exitcode-stdio-1.0
   main-is:             test/Main.hs
   build-depends:       base >=4.7 && <4.8
+                     , HUnit
+                     , QuickCheck
+                     , test-framework
+                     , test-framework-quickcheck2
+                     , test-framework-hunit
   hs-source-dirs:      ./ test
   default-language:    Haskell2010
