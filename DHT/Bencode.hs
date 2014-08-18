@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+module DHT.Bencode (BKey, BVal, bshow) where
+
 import Text.Printf
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as C

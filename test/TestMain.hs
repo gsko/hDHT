@@ -5,10 +5,12 @@ import Test.Framework.Providers.QuickCheck2
 import Test.HUnit
 import Test.QuickCheck
 
+import DHT.Bencode
+
 main :: IO ()
 main = defaultMainWithOpts
-       [ testCase "rev" testRev
-       , testProperty "listRevRevId" propListRevRevId
+       [ testCase "rev" testRev,
+       testProperty "listRevRevId" propListRevRevId
        ] mempty
 
 testRev :: Assertion
