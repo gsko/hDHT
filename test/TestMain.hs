@@ -15,12 +15,16 @@ instance Show BVal where
 
 main :: IO ()
 main = defaultMainWithOpts [
-         testCase "bshow BInt" bshowTest
-       , testProperty "bshow BInt Length" bShowIntProp 
+         testProperty "BInt encoding property" bintEncode
+       , testProperty "BStr encoding property" bstrEncode
+       , testProperty "BList encoding property" blistEncode
        ] mempty
 
-bshowTest :: Assertion
-bshowTest = bshow (BInt 5) @?= "i5e"
+bintEncode :: Integer -> Property 
+bintEncode n = property $ (BS.unpack . bshow . BInt) n == "i" ++ show n ++ "e"
 
-bShowIntProp :: Integer -> Property
-bShowIntProp i = property $ (BS.length . bshow . BInt) i == 2 + (length . show) i
+bstrEncode :: String -> Property
+bstrEncode s = property $  (BS.unpack . bshow . BStr) s == (show . length) s ++ ":" ++ s
+
+blistEncode :: [RawBVals] -> Property
+blistEncode l = property $ True
