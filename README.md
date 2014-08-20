@@ -4,5 +4,7 @@ hDHT
 
 To run the tests:
 > cabal test
-or
+>
+> or
+>
 > runhaskell test/TestMain.hs
