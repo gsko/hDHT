@@ -25,6 +25,3 @@ bintEncode n = property $ (BS.unpack . bshow . BInt) n == "i" ++ show n ++ "e"
 
 bstrEncode :: String -> Property
 bstrEncode s = property $  (BS.unpack . bshow . BStr) s == (show . length) s ++ ":" ++ s
-
-blistEncode :: [RawBVals] -> Property
-blistEncode l = property $ True
