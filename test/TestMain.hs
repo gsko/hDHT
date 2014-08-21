@@ -15,9 +15,9 @@ instance Show BVal where
 
 main :: IO ()
 main = defaultMainWithOpts [
-         testProperty "BInt encoding property" bintEncode
-       , testProperty "BStr encoding property" bstrEncode
-       , testProperty "BList encoding property" blistEncode
+         testProperty "BInt encoding" bintEncode
+       , testProperty "BStr encoding" bstrEncode
+       , testCase "BList encoding" blistSimpleEncode
        ] mempty
 
 bintEncode :: Integer -> Property 
@@ -25,3 +25,6 @@ bintEncode n = property $ (BS.unpack . bshow . BInt) n == "i" ++ show n ++ "e"
 
 bstrEncode :: String -> Property
 bstrEncode s = property $  (BS.unpack . bshow . BStr) s == (show . length) s ++ ":" ++ s
+
+blistSimpleEncode :: Assertion
+blistSimpleEncode = bshow (BList [BInt 5, BStr "hey"]) @?= "li5e3:heye"
