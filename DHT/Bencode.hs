@@ -30,15 +30,16 @@ bshow (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
 ----- Parsers
 number :: Parser Integer
 number =
-    do nStr <- many1 digit
-       return $ read nStr
+    do neg <- try $ string "-" <|> string ""
+       nStr <- many1 digit
+       return $ read (neg ++ nStr)
 bint :: Parser BVal
 bint =
     do char 'i'
        num <- number
        char 'e'
        return $ BInt num
-bread :: String -> Either ParseError [BVal]
-bread = parse (many bint) ""
+bdecode :: String -> Either ParseError [BVal]
+bdecode = parse (many bint) ""
 
-main = putStrLn . show $ bread "i5ei6e"
+main = putStrLn . show $ bdecode "i5ei6e"
