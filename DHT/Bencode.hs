@@ -34,19 +34,25 @@ number =
        numStr <- many1 digit
        return $ read (neg ++ numStr)
 bstr :: Parser BVal
-bstr =
-    do len <- number
-       char ':'
-       contents <- count (fromIntegral len) anyChar
-       return $ BStr contents
+bstr = do
+    len <- number
+    char ':'
+    contents <- count (fromIntegral len) anyChar
+    return $ BStr contents
 bint :: Parser BVal
-bint =
-    do char 'i'
-       num <- number
-       char 'e'
-       return $ BInt num
+bint = do
+    char 'i'
+    num <- number
+    char 'e'
+    return $ BInt num
+blist :: Parser BVal
+blist = do
+    char 'l'
+    xs <- many bparse
+    char 'e'
+    return $ BList xs
 bparse :: Parser BVal
-bparse = bint <|> bstr
+bparse = bint <|> bstr <|> blist
 bdecode :: String -> Either ParseError [BVal]
 bdecode = parse (many bparse) ""
 
