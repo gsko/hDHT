@@ -1,5 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-module DHT.Bencode (BVal(BInt, BStr, BList, BDict), bshow) where
+module DHT.Bencode (
+    BVal(BInt, BStr, BList, BDict)
+  , bshow
+  , bdecode)
+where
 
 import Text.Printf
 import qualified Data.ByteString as BS
