@@ -31,15 +31,23 @@ bshow (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
 number :: Parser Integer
 number =
     do neg <- try $ string "-" <|> string ""
-       nStr <- many1 digit
-       return $ read (neg ++ nStr)
+       numStr <- many1 digit
+       return $ read (neg ++ numStr)
+bstr :: Parser BVal
+bstr =
+    do len <- number
+       char ':'
+       contents <- count (fromIntegral len) anyChar
+       return $ BStr contents
 bint :: Parser BVal
 bint =
     do char 'i'
        num <- number
        char 'e'
        return $ BInt num
+bparse :: Parser BVal
+bparse = bint <|> bstr
 bdecode :: String -> Either ParseError [BVal]
-bdecode = parse (many bint) ""
+bdecode = parse (many bparse) ""
 
-main = putStrLn . show $ bdecode "i5ei6e"
+main = undefined
