@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module DHT.Bencode (BKey, BVal(BInt, BStr, BList, BDict), bshow) where
+module DHT.Bencode (BVal(BInt, BStr, BList, BDict), bshow) where
 
 import Text.Printf
 import qualified Data.ByteString as BS
@@ -7,12 +7,11 @@ import qualified Data.ByteString.Char8 as C
 import qualified Data.Map.Strict as M
 import Text.ParserCombinators.Parsec
 
-type BKey = String
 data BVal = BInt Integer
     | BStr String
     | BList [BVal]
-    | BDict (M.Map BKey BVal)
-    deriving Show
+    | BDict (M.Map BVal BVal)
+    deriving (Show,Ord,Eq)
 
 (~~) :: BS.ByteString -> BS.ByteString -> BS.ByteString
 (~~) = BS.append
@@ -24,8 +23,8 @@ bshow (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
     where f :: BS.ByteString -> BVal -> BS.ByteString
           f acc b = acc ~~ bshow b
 bshow (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
-    where f :: BS.ByteString -> String -> BVal -> BS.ByteString
-          f acc k b = acc ~~ bshow (BStr k) ~~ bshow b
+    where f :: BS.ByteString -> BVal -> BVal -> BS.ByteString
+          f acc k b = acc ~~ bshow k ~~ bshow b
 
 ----- Parsers
 number :: Parser Integer
@@ -50,9 +49,20 @@ blist = do
     char 'l'
     xs <- many bparse
     char 'e'
-    return $ BList xs
+    (return . BList) xs
+bdict :: Parser BVal
+bdict = do
+    char 'd'
+    kvPairs <- many1 bDictEntry
+    char 'e'
+    (return . BDict . M.fromList) kvPairs
+bDictEntry :: Parser (BVal, BVal)
+bDictEntry = do
+    k <- bstr <?> "dict keys must be strings"
+    v <- bparse
+    return (k,v)
 bparse :: Parser BVal
-bparse = bint <|> bstr <|> blist
+bparse = bint <|> bstr <|> blist <|> bdict
 bdecode :: String -> Either ParseError [BVal]
 bdecode = parse (many bparse) ""
 
