@@ -15,4 +15,5 @@ main = do
       , ropt_color_mode = Just ColorAuto
       , ropt_list_only = Just False
     }
-    defaultMainWithOpts BT.tests runnerOpts
+    let tests = BT.tests
+    defaultMainWithOpts tests runnerOpts
