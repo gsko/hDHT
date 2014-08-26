@@ -25,11 +25,11 @@ tests = [
 
 bintEncode :: Integer -> Property 
 bintEncode n = property $ (BS.unpack . bshow . BInt) n ==
-    "i" ++ show n ++ "e"
+    printf "i%de" n
 
 bstrEncode :: String -> Property
 bstrEncode s = property $ (BS.unpack . bshow . BStr) s ==
-    (show . length) s ++ ":" ++ s
+    printf "%d:%s" (length s) s
 
 blistEncode :: Assertion
 blistEncode = "li5e3:heye" @?=
@@ -38,7 +38,7 @@ blistEncode = "li5e3:heye" @?=
 bdictEncode :: Assertion
 bdictEncode = "d1:ai1ee" @?=
     (bshow . BDict . M.fromList) [(BStr "a", BInt 1)]
-    
+
 bintDecode :: Integer -> Property
 bintDecode n = case bdecode (printf "i%de" n) of
     Right ([BInt n']) -> property $ n == n'

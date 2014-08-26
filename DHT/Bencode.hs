@@ -69,5 +69,3 @@ bparse :: Parser BVal
 bparse = bint <|> bstr <|> blist <|> bdict
 bdecode :: String -> Either ParseError [BVal]
 bdecode = parse (many bparse) ""
-
-main = undefined
