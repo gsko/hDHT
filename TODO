@@ -1,0 +1,1 @@
+* Harmonize which type will be used for bencode (String vs ByteString ?)
