@@ -35,4 +35,5 @@ Test-suite reference
                      , test-framework-quickcheck2
                      , test-framework-hunit
                      , bytestring >= 0.10.4.0
+                     , containers >=0.5.5.1
   default-language:    Haskell2010

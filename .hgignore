@@ -1,3 +1,5 @@
 syntax: glob
 *.swp
 *dist/
+*.hi
+*.o
