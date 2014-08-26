@@ -13,5 +13,6 @@ main = do
         ropt_test_options = Just opts
       , ropt_hide_successes = Just True
       , ropt_color_mode = Just ColorAlways
+      , ropt_list_only = Just False
     }
     defaultMainWithOpts BT.tests runnerOpts

@@ -3,3 +3,4 @@ syntax: glob
 *dist/
 *.hi
 *.o
+test/TestMain
