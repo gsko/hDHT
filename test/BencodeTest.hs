@@ -14,39 +14,39 @@ import qualified Data.Map.Strict as M
 import Text.Printf
 
 tests = [
-    testProperty "BInt encoding" bintEncode
-  , testProperty "BStr encoding" bstrEncode
-  , testCase "BList encoding" blistEncode
-  , testCase "BDict encoding" bdictEncode
-  , testProperty "BInt decoding" bintDecode
-  , testProperty "BStr decode" bstrDecode
-  , testCase "BStr decode empty" bstrEmpty
+    testProperty "BInt encoding" prop_bencodeBInt
+  , testProperty "BStr encoding" prop_bencodeBStr
+  , testCase "BList encoding" prop_bencodeBList
+  , testCase "BDict encoding" prop_bencodeBDict
+  , testProperty "BInt decoding" prop_bdecodeBInt
+  , testProperty "BStr decode" prop_bdecodeBStr
+  , testCase "BStr decode empty" test_bdecodeZeroLenBStr
     ]
 
-bintEncode :: Integer -> Property 
-bintEncode n = property $ (BS.unpack . bshow . BInt) n ==
+prop_bencodeBInt :: Integer -> Property 
+prop_bencodeBInt n = property $ (BS.unpack . bencode . BInt) n ==
     printf "i%de" n
 
-bstrEncode :: String -> Property
-bstrEncode s = property $ (BS.unpack . bshow . BStr) s ==
+prop_bencodeBStr :: String -> Property
+prop_bencodeBStr s = property $ (BS.unpack . bencode . BStr) s ==
     printf "%d:%s" (length s) s
 
-blistEncode :: Assertion
-blistEncode = "li5e3:heye" @?=
-    (bshow . BList) [BInt 5, BStr "hey"]
+prop_bencodeBList :: Assertion
+prop_bencodeBList = "li5e3:heye" @?=
+    (bencode . BList) [BInt 5, BStr "hey"]
 
-bdictEncode :: Assertion
-bdictEncode = "d1:ai1ee" @?=
-    (bshow . BDict . M.fromList) [(BStr "a", BInt 1)]
+prop_bencodeBDict :: Assertion
+prop_bencodeBDict = "d1:ai1ee" @?=
+    (bencode . BDict . M.fromList) [(BStr "a", BInt 1)]
 
-bintDecode :: Integer -> Property
-bintDecode n = case bdecode (printf "i%de" n) of
+prop_bdecodeBInt :: Integer -> Property
+prop_bdecodeBInt n = case bdecode (printf "i%de" n) of
     Right ([BInt n']) -> property $ n == n'
 
-bstrDecode :: String -> Property
-bstrDecode s = case bdecode (printf "%d:%s" (length s) s) of
+prop_bdecodeBStr :: String -> Property
+prop_bdecodeBStr s = case bdecode (printf "%d:%s" (length s) s) of
     Right ([BStr s']) -> property $ s == s'
 
-bstrEmpty :: Assertion
-bstrEmpty = case bdecode "0:" of
+test_bdecodeZeroLenBStr :: Assertion
+test_bdecodeZeroLenBStr = case bdecode "0:" of
     Right ([BStr s]) -> s @?= ""

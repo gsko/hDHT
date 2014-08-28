@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module DHT.Bencode (
     BVal(BInt, BStr, BList, BDict)
-  , bshow
+  , bencode
   , bdecode)
 where
 
@@ -20,19 +20,22 @@ data BVal = BInt Integer
 (~~) :: BS.ByteString -> BS.ByteString -> BS.ByteString
 (~~) = BS.append
 
-bshow :: BVal -> BS.ByteString
-bshow (BStr s) = C.pack $ printf "%d:%s" (length s) s
-bshow (BInt i) = C.pack $ printf "i%de" i
-bshow (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
+bencode :: BVal -> BS.ByteString
+bencode (BStr s) = C.pack $ printf "%d:%s" (length s) s
+bencode (BInt i) = C.pack $ printf "i%de" i
+bencode (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
     where f :: BS.ByteString -> BVal -> BS.ByteString
-          f acc b = acc ~~ bshow b
-bshow (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
+          f acc b = acc ~~ bencode b
+bencode (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
     where f :: BS.ByteString -> BVal -> BVal -> BS.ByteString
-          f acc k b = acc ~~ bshow k ~~ bshow b
+          f acc k b = acc ~~ bencode k ~~ bencode b
+
+bdecode :: String -> Either ParseError [BVal]
+bdecode = parse (many bparse) ""
 
 ----- Parsers
 number :: Parser Integer
-number =
+number = 
     do neg <- try $ string "-" <|> string ""
        numStr <- many1 digit
        return $ read (neg ++ numStr)
@@ -67,5 +70,4 @@ bDictEntry = do
     return (k,v)
 bparse :: Parser BVal
 bparse = bint <|> bstr <|> blist <|> bdict
-bdecode :: String -> Either ParseError [BVal]
-bdecode = parse (many bparse) ""
+
