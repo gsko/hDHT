@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module DHT.Bencode (
     BVal(BInt, BStr, BList, BDict)
   , bencode

@@ -3,6 +3,7 @@ import Test.Framework.Options
 import Data.Monoid
 
 import qualified BencodeTest as BT
+import qualified NodeTest as NT
 
 main :: IO ()
 main = do
@@ -15,5 +16,5 @@ main = do
       , ropt_color_mode = Just ColorAuto
       , ropt_list_only = Just False
     }
-    let tests = BT.tests
+    let tests = BT.tests ++ NT.tests
     defaultMainWithOpts tests runnerOpts
