@@ -16,5 +16,5 @@ main = do
       , ropt_color_mode = Just ColorAuto
       , ropt_list_only = Just False
     }
-    let tests = BT.tests ++ NT.tests
+    let tests = [BT.tests, NT.tests]
     defaultMainWithOpts tests runnerOpts

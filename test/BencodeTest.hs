@@ -3,6 +3,7 @@ module BencodeTest (tests) where
 import DHT.Bencode
 
 import Test.Framework
+import Test.Framework.Providers.API
 import Test.Framework.Providers.HUnit
 import Test.Framework.Providers.QuickCheck2
 import Test.HUnit
@@ -13,7 +14,7 @@ import Data.Monoid
 import qualified Data.Map.Strict as M
 import Text.Printf
 
-tests = [
+tests = TestGroup "BencodeTest" [
     testProperty "BInt encoding" prop_bencodeBInt
   , testProperty "BStr encoding" prop_bencodeBStr
   , testCase "BList encoding" prop_bencodeBList
