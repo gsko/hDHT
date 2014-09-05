@@ -12,4 +12,6 @@ import Test.QuickCheck
 tests = TestGroup "NodeTest" [
     testCase "test: node construction"
         (Node 5 @?= Node 5)
+  , testProperty "prop: node's self distance is zero"
+        (\n-> property $ nodeDist (Node n) (Node n) == 0)
     ]
