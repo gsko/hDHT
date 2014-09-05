@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module BencodeTest (tests) where
 import DHT.Bencode
 

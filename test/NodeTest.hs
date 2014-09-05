@@ -11,7 +11,5 @@ import Test.QuickCheck
 
 tests = TestGroup "NodeTest" [
     testCase "test: node construction"
-        (5 @?= 5)
-  , testCase "test: node construction 2"
-        (7 @?= 6)
+        (Node 5 @?= Node 5)
     ]
