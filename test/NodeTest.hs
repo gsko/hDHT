@@ -39,9 +39,11 @@ tests = TestGroup "NodeTest" [
         let w = Word160 123 456 789 1011 1213 in
             dist w w @?= Word160 0 0 0 0 0)
 
+  , testCase "test: maxBound of Word160" (
+        (maxBound :: Word160 ) @?= (Word160 1 1 1 1 1))
+
   , testProperty "prop: Nodes with same ID have distance zero"
-        (\(Node n) (Node n') -> property $
-            n == n' ==> dist n n' == Word160 0 0 0 0 0)
+        (\(Node n) -> property $ dist n n == Word160 0 0 0 0 0)
 
   , testCase "test: Word160->Integer 0 equality"
         (D.toInteger (Word160 0 0 0 0 0) @?= 0)
