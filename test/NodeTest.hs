@@ -40,7 +40,9 @@ tests = TestGroup "NodeTest" [
             dist w w @?= Word160 0 0 0 0 0)
 
   , testCase "test: maxBound of Word160" (
-        (maxBound :: Word160 ) @?= (Word160 1 1 1 1 1))
+        let f :: Integer -> Integer -> Integer
+            f acc n = acc + (2^32 * 2^n) in
+        (maxBound :: Word160) @?= (D.fromInteger $ foldl f 0 [128,96,64,32,0]))
 
   , testProperty "prop: Nodes with same ID have distance zero"
         (\(Node n) -> property $ dist n n == Word160 0 0 0 0 0)

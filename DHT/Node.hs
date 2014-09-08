@@ -9,9 +9,9 @@ data Word160 = Word160 !Word32 !Word32 !Word32 !Word32 !Word32
 
 instance Bounded Word160 where
     minBound = Word160 0 0 0 0 0
-    maxBound = Word160 1 1 1 1 1
-    --    where m :: Data.Word.Word32
-    --          m = maxBound Data.Word.Word32
+    maxBound = Word160 m m m m m
+        where m :: Word32
+              m = maxBound :: Word32
 
 data Node = Node {
     id :: Word160
@@ -20,6 +20,16 @@ data Node = Node {
 dist :: Word160 -> Word160 -> Word160
 dist (Word160 a b c d e) (Word160 a' b' c' d' e') =
     Word160 (a `xor` a') (b `xor` b') (c `xor` c') (d `xor` d') (e `xor` e')
+
+fromInteger :: Integer -> Word160
+fromInteger i
+    | i < 0 || i > 2^160 = 
+        error ("integer is <0 or >2^160 : " ++ show i)
+    | otherwise = (
+        let mask n = (2^32 .&. (fromIntegral n)) :: Word32
+            w = map mask [i `quot` 2^0, i `quot` 2^32, i `quot` 2^64, i `quot` 2^96, i `quot` 2^128]
+            (w1,w2,w3,w4,w5) = (w !! 0, w !! 1, w !! 2, w !! 3, w !! 4)
+        in Word160 w1 w2 w3 w4 w5)
 
 toInteger :: Word160 -> Integer
 toInteger (Word160 a b c d e) =
