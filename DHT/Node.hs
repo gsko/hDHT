@@ -26,9 +26,13 @@ fromInteger i
     | i < 0 || i > 2^160 = 
         error ("integer is <0 or >2^160 : " ++ show i)
     | otherwise = (
-        let mask n = (2^32 .&. (fromIntegral n)) :: Word32
-            w = map mask [i `quot` 2^0, i `quot` 2^32, i `quot` 2^64, i `quot` 2^96, i `quot` 2^128]
-            (w1,w2,w3,w4,w5) = (w !! 0, w !! 1, w !! 2, w !! 3, w !! 4)
+        let max_w32 = maxBound :: Word32
+            mask n = ((fromIntegral n) .&. max_w32) :: Word32
+            w1 = mask $ i `shiftR` 128
+            w2 = mask $ i `shiftR` 96
+            w3 = mask $ i `shiftR` 64
+            w4 = mask $ i `shiftR` 32
+            w5 = mask $ i `shiftR` 0
         in Word160 w1 w2 w3 w4 w5)
 
 toInteger :: Word160 -> Integer
