@@ -16,6 +16,7 @@ library
   hs-source-dirs:      .
   exposed-modules:     DHT.Node
                      , DHT.Bencode
+                     , DHT.KBucket
   default-extensions:  OverloadedStrings
   build-depends:       base >=4.7 && <4.8
                      , bytestring >=0.10.4.0

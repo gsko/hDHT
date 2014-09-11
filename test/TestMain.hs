@@ -4,6 +4,7 @@ import Data.Monoid
 
 import qualified BencodeTest as BT
 import qualified NodeTest as NT
+import qualified KBucketTest as KT
 
 main :: IO ()
 main = do
@@ -16,5 +17,5 @@ main = do
       , ropt_color_mode = Just ColorAuto
       , ropt_list_only = Just False
     }
-    let tests = [BT.tests, NT.tests]
+    let tests = [BT.tests, NT.tests, KT.tests]
     defaultMainWithOpts tests runnerOpts
