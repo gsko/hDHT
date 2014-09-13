@@ -10,6 +10,6 @@ import Test.HUnit
 import Test.QuickCheck
 
 x :: KBucket
-x = KBucket $ map (Node . N.fromInteger) [1,2,3,4,5]
+x = KBucket [] (N.fromInteger 0) (N.fromInteger $ 2^160) 256
 
 tests = TestGroup "KBucketTest" []
