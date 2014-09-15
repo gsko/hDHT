@@ -5,7 +5,7 @@ import Data.Bits
 
 -- Word160 : 160 bits = 20 bytes = 5 * 4 byte words = 5 Word32's
 data Word160 = Word160 !Word32 !Word32 !Word32 !Word32 !Word32
-    deriving (Show, Eq)
+    deriving (Show, Eq, Ord)
 
 instance Bounded Word160 where
     minBound = Word160 0 0 0 0 0
