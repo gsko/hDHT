@@ -1,1 +1,3 @@
--- placeholder
+-- placeholder for hDHT daemon
+-- * named pipe interface
+-- * simple ascii line based protocol (parseable with parsec)
