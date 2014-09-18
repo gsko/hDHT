@@ -1,10 +1,21 @@
+module DHT.Protocol where
+
 import Network.Socket
 import Data.List
+import Data.Word
 import Text.Printf
+
+import DHT.Node as D
+import qualified Data.ByteString as B
 
 pingQuery :: String
 --pingQuery = "d1:ad2:id20:1111111111111111111111:q4:ping1:t2:aa1:y1:qe"
 pingQuery = "d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe"
+
+data Query = Ping Word160
+    | FindNode Word160 Word160
+    | GetPeers Word160 Word160
+    | AnnouncePeer Word160 Word160 Word16 B.ByteString
 
 main :: IO()
 main = do

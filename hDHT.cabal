@@ -17,11 +17,13 @@ library
   exposed-modules:     DHT.Node
                      , DHT.Bencode
                      , DHT.KBucket
+                     , DHT.Protocol
   default-extensions:  OverloadedStrings
   build-depends:       base >=4.7 && <4.8
                      , bytestring >=0.10.4.0
                      , containers >=0.5.5.1
                      , parsec >=3.1.5
+                     , network >= 2.5.0.0
   default-language:    Haskell2010
 
 Test-suite reference
@@ -36,7 +38,6 @@ Test-suite reference
                      , test-framework
                      , test-framework-quickcheck2
                      , test-framework-hunit
-                     , testpack >=2.1.2.1
                      , bytestring >= 0.10.4.0
                      , containers >=0.5.5.1
   default-language:    Haskell2010

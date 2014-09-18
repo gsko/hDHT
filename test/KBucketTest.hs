@@ -7,7 +7,6 @@ import Test.Framework.Providers.API
 import Test.Framework.Providers.HUnit
 import Test.Framework.Providers.QuickCheck2
 import Test.HUnit
-import Test.HUnit.Tools (assertRaises)
 import Test.QuickCheck
 
 x :: KBucket
