@@ -12,10 +12,16 @@ pingQuery :: String
 --pingQuery = "d1:ad2:id20:1111111111111111111111:q4:ping1:t2:aa1:y1:qe"
 pingQuery = "d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe"
 
-data Query = Ping Word160
-    | FindNode Word160 Word160
-    | GetPeers Word160 Word160
-    | AnnouncePeer Word160 Word160 Word16 B.ByteString
+data Query = PingQ Word160
+    | FindNodeQ Word160 Word160
+    | GetPeersQ Word160 Word160
+    | AnnouncePeerQ Word160 Word160 Word16 B.ByteString
+
+data Response = PingR Word160
+    | FindNodeR Word160 [D.Node]
+    | GetPeersPR Word160 B.ByteString [B.ByteString]
+    | GetPeersNR Word160 B.ByteString [D.Node]
+    | AnnouncePeersR Word160
 
 main :: IO()
 main = do
