@@ -18,6 +18,7 @@ library
                      , DHT.Bencode
                      , DHT.KBucket
                      , DHT.Protocol
+                     , DHT.Messages
   default-extensions:  OverloadedStrings
   build-depends:       base >=4.7 && <4.8
                      , bytestring >=0.10.4.0
