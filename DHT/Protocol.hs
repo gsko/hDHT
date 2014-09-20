@@ -49,6 +49,9 @@ encodeResponse msg = undefined
 -- (GetPeersNR from token nodes)
 -- (AnnouncePeersR from)
 
+encodeError :: Error -> B.ByteString
+encodeError (Error code reason) = undefined
+
 main :: IO()
 main = do
     -- Prepare the socket
