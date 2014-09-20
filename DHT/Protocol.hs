@@ -12,16 +12,31 @@ pingQuery :: String
 --pingQuery = "d1:ad2:id20:1111111111111111111111:q4:ping1:t2:aa1:y1:qe"
 pingQuery = "d1:ad2:id20:abcdefghij0123456789e1:q4:ping1:t2:aa1:y1:qe"
 
-data Query = PingQ Word160
-    | FindNodeQ Word160 Word160
-    | GetPeersQ Word160 Word160
-    | AnnouncePeerQ Word160 Word160 Word16 B.ByteString
+type NodeID = Word160
+type Infohash = Word160
+type Port = Word16
+type Token = B.ByteString
+type PeerInfo = B.ByteString
 
-data Response = PingR Word160
-    | FindNodeR Word160 [D.Node]
-    | GetPeersPR Word160 B.ByteString [B.ByteString]
-    | GetPeersNR Word160 B.ByteString [D.Node]
-    | AnnouncePeersR Word160
+data Query = PingQ NodeID
+    | FindNodeQ NodeID NodeID
+    | GetPeersQ NodeID Infohash
+    | AnnouncePeerQ NodeID Infohash Port Token
+
+data Response = PingR NodeID
+    | FindNodeR NodeID [D.Node]
+    -- TODO merge both of these messages
+    | GetPeersPR NodeID Token [PeerInfo]
+    | GetPeersNR NodeID Token [D.Node]
+    | AnnouncePeersR NodeID
+
+encodeQuery :: Query -> B.ByteString
+encodeQuery (PingQ self) = undefined
+encodeQuery (FindNodeQ self targetNode) = undefined
+encodeQuery (GetPeersQ self targetInfohash) = undefined
+encodeQuery (AnnouncePeerQ self targetInfohash port token) = undefined
+
+--encodeResponse :: B.ByteString -> Response
 
 main :: IO()
 main = do
