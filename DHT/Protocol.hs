@@ -30,6 +30,11 @@ data Response = PingR NodeID
     | GetPeersNR NodeID Token [D.Node]
     | AnnouncePeersR NodeID
 
+type ErrorCode = Integer
+type ErrorReason = B.ByteString
+
+data Error = Error ErrorCode ErrorReason
+
 encodeQuery :: Query -> B.ByteString
 encodeQuery (PingQ self) = undefined
 encodeQuery (FindNodeQ self targetNode) = undefined
