@@ -16,7 +16,7 @@ type NodeID = Word160
 type Infohash = Word160
 type Port = Word16
 type Token = B.ByteString
-type PeerInfo = B.ByteString
+type Peer = B.ByteString
 
 data Query = PingQ NodeID
     | FindNodeQ NodeID NodeID
@@ -26,7 +26,7 @@ data Query = PingQ NodeID
 data Response = PingR NodeID
     | FindNodeR NodeID [D.Node]
     -- TODO merge both of these messages
-    | GetPeersPR NodeID Token [PeerInfo]
+    | GetPeersPR NodeID Token [Peer]
     | GetPeersNR NodeID Token [D.Node]
     | AnnouncePeersR NodeID
 
@@ -36,7 +36,13 @@ encodeQuery (FindNodeQ self targetNode) = undefined
 encodeQuery (GetPeersQ self targetInfohash) = undefined
 encodeQuery (AnnouncePeerQ self targetInfohash port token) = undefined
 
---encodeResponse :: B.ByteString -> Response
+encodeResponse :: B.ByteString -> Response
+encodeResponse msg = undefined
+-- (PingR from)
+-- (FindNodeR from nodes)
+-- (GetPeersPR from token peers)
+-- (GetPeersNR from token nodes)
+-- (AnnouncePeersR from)
 
 main :: IO()
 main = do
