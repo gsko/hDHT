@@ -7,6 +7,7 @@ import qualified NodeTest as NT
 import qualified KBucketTest as KT
 import qualified ProtocolTest as PT
 import qualified MessagesTest as MT
+import qualified TokenBucketTest as TBT
 
 main :: IO ()
 main = do
@@ -19,5 +20,5 @@ main = do
       , ropt_color_mode = Just ColorAuto
       , ropt_list_only = Just False
     }
-    let tests = [BT.tests, NT.tests, KT.tests] --, PT.tests, MT.tests]
+    let tests = [BT.tests, NT.tests, KT.tests] -- TBT.tests] --, PT.tests, MT.tests]
     defaultMainWithOpts tests runnerOpts

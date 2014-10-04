@@ -24,10 +24,10 @@ bencode (BStr s) = C.pack $ printf "%d:%s" (length s) s
 bencode (BInt i) = C.pack $ printf "i%de" i
 bencode (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
     where f :: BS.ByteString -> BVal -> BS.ByteString
-          f acc b = acc ~~ bencode b
+          f acc bval = acc ~~ bencode bval
 bencode (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
     where f :: BS.ByteString -> BVal -> BVal -> BS.ByteString
-          f acc k b = acc ~~ bencode k ~~ bencode b
+          f acc key bval = acc ~~ bencode key ~~ bencode bval
 
 bdecode :: String -> Either ParseError [BVal]
 bdecode = parse (many bparse) ""

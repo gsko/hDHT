@@ -1,5 +1,5 @@
-module TokenBucketTests (tests) where
+module TokenBucketTest () where
 
-import TokenBucket
+import Test.Framework
 
-tests = []
+import DHT.TokenBucket
