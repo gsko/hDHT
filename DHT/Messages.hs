@@ -32,9 +32,16 @@ type ErrorReason = B.ByteString
 
 data Error = Error ErrorCode ErrorReason
 
+encodeKVs :: [(BVal, BVal)] -> B.ByteString
+encodeKVs = bencode . BDict . M.fromList
+
+baseKVs :: Word160 -> [(BVal, BVal)]
+baseKVs w = [(BStr "id", BInt $ N.toInteger w)]
+
 encodeQuery :: Query -> B.ByteString
-encodeQuery (PingQ self) = bencode . BDict $ M.fromList [(BStr "id", BInt $ N.toInteger self)]
-encodeQuery (FindNodeQ self targetNode) = undefined
+encodeQuery (PingQ self) = encodeKVs $ (baseKVs self) ++ [(BStr "q", BStr "ping")]
+encodeQuery (FindNodeQ self targetNode) = encodeKVs $ (baseKVs self) ++ [
+    (BStr "q", BStr "find_node"), (BStr "target", BInt . N.toInteger $ targetNode)]
 encodeQuery (GetPeersQ self targetInfohash) = undefined
 encodeQuery (AnnouncePeerQ self targetInfohash port token) = undefined
 
