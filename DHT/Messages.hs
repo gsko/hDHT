@@ -1,15 +1,16 @@
 module DHT.Messages where 
 
-import Data.Word
-
-import DHT.Node as N
+import qualified DHT.Node as N
 import DHT.Bencode
+
+import qualified Data.Word as W
 import qualified Data.Map.Strict as M
 import qualified Data.ByteString as B
+import qualified Data.ByteString.Char8 as C
 
-type NodeID = Word160
-type Infohash = Word160
-type Port = Word16
+type NodeID = N.Word160
+type Infohash = N.Word160
+type Port = W.Word16
 type Token = B.ByteString
 type Peer = B.ByteString
 
@@ -35,15 +36,29 @@ data Error = Error ErrorCode ErrorReason
 encodeKVs :: [(BVal, BVal)] -> B.ByteString
 encodeKVs = bencode . BDict . M.fromList
 
-baseKVs :: Word160 -> [(BVal, BVal)]
-baseKVs w = [(BStr "id", BInt $ N.toInteger w)]
-
 encodeQuery :: Query -> B.ByteString
-encodeQuery (PingQ self) = encodeKVs $ (baseKVs self) ++ [(BStr "q", BStr "ping")]
-encodeQuery (FindNodeQ self targetNode) = encodeKVs $ (baseKVs self) ++ [
-    (BStr "q", BStr "find_node"), (BStr "target", BInt . N.toInteger $ targetNode)]
-encodeQuery (GetPeersQ self targetInfohash) = undefined
-encodeQuery (AnnouncePeerQ self targetInfohash port token) = undefined
+encodeQuery (PingQ self) = encodeKVs [
+    (BStr "id", BInt $ N.toInteger self)
+  , (BStr "q", BStr "ping")
+    ]
+encodeQuery (FindNodeQ self targetNode) = encodeKVs [
+    (BStr "id", BInt $ N.toInteger self)
+  , (BStr "q", BStr "find_node")
+  , (BStr "target", BInt . N.toInteger $ targetNode)
+    ]
+encodeQuery (GetPeersQ self targetInfohash) = encodeKVs [
+    (BStr "id", BInt $ N.toInteger self)
+  , (BStr "q", BStr "get_peers")
+  , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+    ]
+encodeQuery (AnnouncePeerQ self targetInfohash port token) = encodeKVs [
+    (BStr "id", BInt $ N.toInteger self)
+  , (BStr "q", BStr "announce_peer")
+  , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+  , (BStr "port", BInt . toInteger $ port)
+  , (BStr "token", BStr $ C.unpack token)
+    ]
+    
 
 encodeResponse :: Response -> B.ByteString
 encodeResponse (PingR from) = undefined

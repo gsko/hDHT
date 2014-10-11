@@ -1,1 +1,1 @@
-* Harmonize which type will be used for bencode (String vs ByteString ?)
+* In DHT.Bencode, replace all String's for ByteString's.
