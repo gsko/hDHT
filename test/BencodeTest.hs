@@ -1,5 +1,4 @@
 module BencodeTest (tests) where
-
 import DHT.Bencode
 
 import Test.Framework

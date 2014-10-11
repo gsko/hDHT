@@ -5,7 +5,7 @@ module DHT.Bencode (
 where
 
 import Text.Printf
-import qualified Data.ByteString as BS
+import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map.Strict as M
 import Text.ParserCombinators.Parsec
@@ -16,17 +16,17 @@ data BVal = BInt Integer
     | BDict (M.Map BVal BVal)
     deriving (Show,Ord,Eq)
 
-(~~) :: BS.ByteString -> BS.ByteString -> BS.ByteString
-(~~) = BS.append
+(~~) :: B.ByteString -> B.ByteString -> B.ByteString
+(~~) = B.append
 
-bencode :: BVal -> BS.ByteString
+bencode :: BVal -> B.ByteString
 bencode (BStr s) = C.pack $ printf "%d:%s" (length s) s
 bencode (BInt i) = C.pack $ printf "i%de" i
 bencode (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
-    where f :: BS.ByteString -> BVal -> BS.ByteString
+    where f :: B.ByteString -> BVal -> B.ByteString
           f acc bval = acc ~~ bencode bval
 bencode (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
-    where f :: BS.ByteString -> BVal -> BVal -> BS.ByteString
+    where f :: B.ByteString -> BVal -> BVal -> B.ByteString
           f acc key bval = acc ~~ bencode key ~~ bencode bval
 
 bdecode :: String -> Either ParseError [BVal]
