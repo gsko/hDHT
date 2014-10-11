@@ -45,13 +45,12 @@ encodeQuery (FindNodeQ self targetNode) = encodeKVs $ (baseKVs self) ++ [
 encodeQuery (GetPeersQ self targetInfohash) = undefined
 encodeQuery (AnnouncePeerQ self targetInfohash port token) = undefined
 
-encodeResponse :: B.ByteString -> Response
-encodeResponse msg = undefined
--- (PingR from)
--- (FindNodeR from nodes)
--- (GetPeersPR from token peers)
--- (GetPeersNR from token nodes)
--- (AnnouncePeersR from)
+encodeResponse :: Response -> B.ByteString
+encodeResponse (PingR from) = undefined
+encodeResponse (FindNodeR from nodes) = undefined
+encodeResponse (GetPeersPR from token peers) = undefined
+encodeResponse (GetPeersNR from token nodes) = undefined
+encodeResponse (AnnouncePeersR from) = undefined
 
 encodeError :: Error -> B.ByteString
 encodeError (Error code reason) = undefined
