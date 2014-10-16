@@ -64,4 +64,7 @@ tests = TestGroup "NodeTest" [
 
   , testCase "test: big Word160->Integer"
         (D.toInteger (Word160 1 1 1 1 1) @?= 2^0 + 2^32 + 2^64 + 2^96 + 2^128)
+
+  -- TODO:: figure out how to assert an 'error' with HUnit
+  --, testCase "test: fromInteger overflow case"
     ]

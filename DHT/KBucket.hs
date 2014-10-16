@@ -9,6 +9,12 @@ data KBucket = KBucket {
   , size :: Integer
 } deriving (Show)
 
+kbucket :: [Node] -> Word160 -> Word160 -> Integer -> KBucket
+kbucket nodes minID maxID size
+    | minID > maxID = error "invalid min/max ID range"
+    | size <= 0 = error "invalid size"
+    | otherwise = KBucket nodes minID maxID size
+
 empty :: Integer -> KBucket
 empty = KBucket [] (N.fromInteger 0) (N.fromInteger $ 2^160-1)
 

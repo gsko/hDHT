@@ -1,4 +1,4 @@
-module KBucketTest (tests) where
+module KBucketTest where
 import DHT.KBucket as K
 import DHT.Node as N
 
@@ -10,7 +10,7 @@ import Test.HUnit
 import Test.QuickCheck
 
 x :: KBucket
-x = KBucket nodes (N.fromInteger 0) (N.fromInteger $ 2^160 - 1) 256
+x = kbucket nodes (N.fromInteger 0) (N.fromInteger $ 2^160 - 1) 256
     where nodes :: [N.Node]
           nodes = map makeNode [1..20]
 
