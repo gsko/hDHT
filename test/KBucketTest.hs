@@ -20,6 +20,13 @@ makeNode = N.Node . N.fromInteger
 tests = TestGroup "KBucketTest" [
     testCase "test: offernode takes nodes" $
         let node = makeNode 5
-            kbucket = K.empty 256 in
-        False @?= ((null . nodes) $ offernode kbucket node)
+            kbucket = K.empty 256
+            kbucket' = offernode kbucket node in
+        False @?= (null . nodes) kbucket'
+  , testCase "test: offernode maintains node uniqueness" $
+        let node = makeNode $ 2^120
+            kbucket = K.empty 256
+            kbucket' = offernode kbucket node
+            kbucket'' = offernode kbucket' node in
+        1 @?= (length . nodes) kbucket''
     ]
