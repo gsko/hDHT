@@ -9,7 +9,6 @@ import Test.Framework.Providers.QuickCheck2
 import Test.HUnit
 import Test.QuickCheck
 
-x :: KBucket
 x = kbucket nodes (N.fromInteger 0) (N.fromInteger $ 2^160 - 1) 256
     where nodes :: [N.Node]
           nodes = map makeNode [1..20]
@@ -22,11 +21,16 @@ tests = TestGroup "KBucketTest" [
         let node = makeNode 5
             kbucket = K.empty 256
             kbucket' = offernode kbucket node in
-        False @?= (null . nodes) kbucket'
+        False @=? (null . nodes) kbucket'
   , testCase "test: offernode maintains node uniqueness" $
         let node = makeNode $ 2^120
             kbucket = K.empty 256
             kbucket' = offernode kbucket node
             kbucket'' = offernode kbucket' node in
-        1 @?= (length . nodes) kbucket''
+        [node] @=? nodes kbucket''
+  , testCase "test: removenode removes node" $
+        let node = makeNode $ 2^150
+            kbucket = offernode (K.empty 200) node
+            kbucket' = removenode kbucket node in
+        [] @=? nodes kbucket'
     ]

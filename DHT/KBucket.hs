@@ -1,8 +1,9 @@
 module DHT.KBucket(
     offernode
+  , removenode
   , empty
   , kbucket
-  , KBucket(nodes, minID, maxID, size)
+  , nodes, minID, maxID, size
 ) where
 
 import DHT.Node as N
@@ -28,3 +29,8 @@ offernode k@(KBucket nodes minID maxID size) node@(Node nodeID)
     | nodeID < minID || nodeID > maxID = k
     | elem node nodes = k
     | length nodes < fromIntegral size = KBucket (node:nodes) minID maxID size
+
+removenode :: KBucket -> Node -> KBucket
+removenode (KBucket nodes minID maxID size) node =
+    let nodes' = filter (node/=) nodes in
+        KBucket nodes' minID maxID size
