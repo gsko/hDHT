@@ -1,4 +1,9 @@
-module DHT.KBucket where
+module DHT.KBucket(
+    offernode
+  , empty
+  , kbucket
+  , KBucket(nodes, minID, maxID, size)
+) where
 
 import DHT.Node as N
 
@@ -20,7 +25,6 @@ empty = KBucket [] (N.fromInteger 0) (N.fromInteger $ 2^160-1)
 
 offernode :: KBucket -> Node -> KBucket
 offernode k@(KBucket nodes minID maxID size) node@(Node nodeID)
-    | minID > maxID = error $ "KBucket invalid: minSize=" ++ show minID ++ " maxSize=" ++ show maxID
     | nodeID < minID || nodeID > maxID = k
     | elem node nodes = k
     | length nodes < fromIntegral size = KBucket (node:nodes) minID maxID size
