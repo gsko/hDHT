@@ -15,9 +15,11 @@ x = KBucket nodes (N.fromInteger 0) (N.fromInteger $ 2^160 - 1) 256
           nodes = map makeNode [1..20]
 
 makeNode :: Integer -> N.Node
-makeNode = (N.Node . N.fromInteger)
+makeNode = N.Node . N.fromInteger
 
 tests = TestGroup "KBucketTest" [
-    testCase "test: offernode takes nodes"
-        (False @?= ((null . nodes) $ offernode (K.empty 256) (makeNode 5)))
+    testCase "test: offernode takes nodes" $
+        let node = makeNode 5
+            kbucket = K.empty 256 in
+        False @?= ((null . nodes) $ offernode kbucket node)
     ]

@@ -10,7 +10,7 @@ data KBucket = KBucket {
 } deriving (Show)
 
 empty :: Integer -> KBucket
-empty = KBucket [] (N.fromInteger 0) (N.fromInteger $ 2^160)
+empty = KBucket [] (N.fromInteger 0) (N.fromInteger $ 2^160-1)
 
 offernode :: KBucket -> Node -> KBucket
 offernode k@(KBucket nodes minID maxID size) node@(Node nodeID)
