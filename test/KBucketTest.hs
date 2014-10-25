@@ -21,7 +21,7 @@ tests = TestGroup "KBucketTest" [
         let node = makeNode 5
             kbucket = K.empty 256
             kbucket' = offernode kbucket node in
-        False @=? (null . nodes) kbucket'
+        [node] @=? nodes kbucket'
   , testCase "test: offernode maintains node uniqueness" $
         let node = makeNode $ 2^120
             kbucket = K.empty 256
@@ -33,4 +33,5 @@ tests = TestGroup "KBucketTest" [
             kbucket = offernode (K.empty 200) node
             kbucket' = removenode kbucket node in
         [] @=? nodes kbucket'
+  -- , testCase "test:
     ]
