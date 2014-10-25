@@ -17,7 +17,7 @@ library
   exposed-modules:     DHT.Node
                      , DHT.Bencode
                      , DHT.KBucket
-                     , DHT.Protocol
+                     , DHT.API
                      , DHT.Messages
                      , DHT.TokenBucket
   default-extensions:  OverloadedStrings
@@ -28,6 +28,18 @@ library
                      , network >= 2.5.0.0
                      , natural-numbers >= 0.1.2.0
                      , time >= 1.4.2
+  default-language:    Haskell2010
+
+Executable hDHT 
+  Build-Depends:       hDHT
+  Main-Is:             Main.hs
+  Hs-Source-Dirs:      .
+  default-extensions:  OverloadedStrings
+  build-depends:       base
+                     , containers
+                     , bytestring
+                     , network
+                     , parsec
   default-language:    Haskell2010
 
 Test-suite reference

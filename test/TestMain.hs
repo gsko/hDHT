@@ -5,7 +5,6 @@ import Data.Monoid
 import qualified BencodeTest as BT
 import qualified NodeTest as NT
 import qualified KBucketTest as KT
-import qualified ProtocolTest as PT
 import qualified MessagesTest as MT
 import qualified TokenBucketTest as TBT
 
