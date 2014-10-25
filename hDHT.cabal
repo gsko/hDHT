@@ -1,13 +1,7 @@
 name:                hDHT
 version:             0.1
--- synopsis:            
--- description:         
--- license:             
--- license-file:        LICENSE
 author:              Greg Skoczek
 maintainer:          gregory.skoczek@gmail.com
--- copyright:           
--- category:            
 build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
