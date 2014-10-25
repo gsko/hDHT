@@ -1,8 +1,20 @@
 import DHT.Messages
+import DHT.Node as N
 
-import Network.Socket
+import qualified Data.ByteString as B
+import qualified Data.ByteString.Char8 as C
+import Network.Socket hiding (send, sendTo, recv, recvFrom)
+import Network.Socket.ByteString
 import Data.List
 import Text.Printf
+
+type Address = (String, String)
+
+sendMessage :: Socket -> Query -> SockAddr -> IO ()
+sendMessage s q a = do
+    let qstr = encodeQuery q
+    sent <- sendTo s qstr a
+    printf "%s <-out- (%u bytes) \"%s\"\n" (show a) sent (C.unpack qstr)
 
 main :: IO()
 main = do
@@ -15,9 +27,10 @@ main = do
     sock <- socket (addrFamily addrInfo) Datagram defaultProtocol
      
     -- Send the query
-    sent <- sendTo sock pingQuery serverAddr
-    printf "%s <-out- (%u bytes) \"%s\"\n" (show serverAddr) sent pingQuery 
+    -- sent <- sendTo sock pingQuery serverAddr
+    -- printf "%s <-out- (%u bytes) \"%s\"\n" (show serverAddr) sent pingQuery 
+    sendMessage sock (PingQ . N.fromInteger $ 193085091809816938616) serverAddr
 
     -- Receive the response
-    (buf, bufLen, recvAddr) <- recvFrom sock 1500
-    printf "%s --in-> (%u bytes) %s\n" (show recvAddr) bufLen (show buf)
+    (buf, recvAddr) <- recvFrom sock 1500
+    printf "%s --in-> (%u bytes) %s\n" (show recvAddr) (B.length buf) (show buf)
