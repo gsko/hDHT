@@ -33,5 +33,9 @@ tests = TestGroup "KBucketTest" [
             kbucket = offernode (K.empty 200) node
             kbucket' = removenode kbucket node in
         [] @=? nodes kbucket'
-  -- , testCase "test:
+  , testCase "test: nodeIn empty set" $
+        let node = makeNode $ 2^55
+            node' = makeNode $ 591038509831
+            kbucket = offernode (K.empty 200) node in
+        False @=? nodeIn kbucket node'
     ]
