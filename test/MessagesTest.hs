@@ -31,18 +31,21 @@ port = 555
 token :: B.ByteString
 token = C.pack "token here"
 
+tid :: B.ByteString
+tid = "wha"
+
 test_encodeQuery_ping :: Assertion
-test_encodeQuery_ping = "d2:idi5e1:q4:pinge" @=? encodeQuery (PingQ nodeID)
+test_encodeQuery_ping = "d2:idi5e1:q4:pinge" @=? encodeQuery (PingQ tid nodeID)
 
 test_encodeQuery_find_node :: Assertion
 test_encodeQuery_find_node = "d2:idi5e1:q9:find_node6:targeti10ee" @=?
-    encodeQuery (FindNodeQ nodeID infohash)
+    encodeQuery (FindNodeQ tid nodeID infohash)
 
 test_encodeQuery_get_peers :: Assertion
 test_encodeQuery_get_peers = "d2:idi5e9:info_hashi10e1:q9:get_peerse" @=?
-    encodeQuery (GetPeersQ nodeID infohash)
+    encodeQuery (GetPeersQ tid nodeID infohash)
 
 test_encodeQuery_announce_peer :: Assertion
 test_encodeQuery_announce_peer = 
     "d2:idi5e9:info_hashi10e4:porti555e1:q13:announce_peer5:token10:token heree" @=?
-    encodeQuery (AnnouncePeerQ nodeID infohash port token)
+    encodeQuery (AnnouncePeerQ tid nodeID infohash port token)

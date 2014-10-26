@@ -29,7 +29,8 @@ main = do
     -- Send the query
     -- sent <- sendTo sock pingQuery serverAddr
     -- printf "%s <-out- (%u bytes) \"%s\"\n" (show serverAddr) sent pingQuery 
-    sendMessage sock (PingQ . N.fromInteger $ 193085091809816938616) serverAddr
+    let tid = "bo" :: B.ByteString
+    sendMessage sock ((PingQ tid) . N.fromInteger $ 193085091809816938616) serverAddr
 
     -- Receive the response
     (buf, recvAddr) <- recvFrom sock 1500
