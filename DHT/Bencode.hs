@@ -1,17 +1,20 @@
 module DHT.Bencode (
     BVal(BInt, BStr, BList, BDict)
   , bencode
-  , bdecode)
+  , bdecode
+  , (~~))
 where
 
 import Text.Printf
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Map.Strict as M
-import Text.ParserCombinators.Parsec
+import Control.Applicative
+import Data.Attoparsec.ByteString
+import Data.Attoparsec.ByteString.Char8
 
 data BVal = BInt Integer
-    | BStr String
+    | BStr B.ByteString
     | BList [BVal]
     | BDict (M.Map BVal BVal)
     deriving (Show,Ord,Eq)
@@ -20,7 +23,9 @@ data BVal = BInt Integer
 (~~) = B.append
 
 bencode :: BVal -> B.ByteString
-bencode (BStr s) = C.pack $ printf "%d:%s" (length s) s
+bencode (BStr s) = blen ~~ ":" ~~ s
+    where blen :: B.ByteString
+          blen = C.pack . show . B.length $ s
 bencode (BInt i) = C.pack $ printf "i%de" i
 bencode (BList bs) = "l" ~~ foldl f "" bs ~~ "e"
     where f :: B.ByteString -> BVal -> B.ByteString
@@ -29,25 +34,20 @@ bencode (BDict map) = "d" ~~ M.foldlWithKey f "" map ~~ "e"
     where f :: B.ByteString -> BVal -> BVal -> B.ByteString
           f acc key bval = acc ~~ bencode key ~~ bencode bval
 
-bdecode :: String -> Either ParseError [BVal]
-bdecode = parse (many bparse) ""
+bdecode :: B.ByteString -> Maybe [BVal]
+bdecode = maybeResult . (parse . many $ bparse)
 
 ----- Parsers
-number :: Parser Integer
-number = 
-    do neg <- try $ string "-" <|> string ""
-       numStr <- many1 digit
-       return $ read (neg ++ numStr)
 bstr :: Parser BVal
 bstr = do
-    len <- number
+    len <- decimal
     char ':'
-    contents <- count (fromIntegral len) anyChar
-    return $ BStr contents
+    contents <- count (fromIntegral len) anyWord8
+    return . BStr . B.pack $ contents
 bint :: Parser BVal
 bint = do
     char 'i'
-    num <- number
+    num <- decimal
     char 'e'
     return $ BInt num
 blist :: Parser BVal
@@ -69,4 +69,3 @@ bDictEntry = do
     return (k,v)
 bparse :: Parser BVal
 bparse = bint <|> bstr <|> blist <|> bdict
-

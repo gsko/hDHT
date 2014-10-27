@@ -57,7 +57,7 @@ encodeQuery (AnnouncePeerQ tid self targetInfohash port token) = encodeKVs [
   , (BStr "q", BStr "announce_peer")
   , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
   , (BStr "port", BInt . toInteger $ port)
-  , (BStr "token", BStr $ C.unpack token)
+  , (BStr "token", BStr token)
     ]
     
 encodeResponse :: Response -> B.ByteString
