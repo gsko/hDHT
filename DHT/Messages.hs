@@ -7,6 +7,7 @@ import qualified Data.Word as W
 import qualified Data.Map.Strict as M
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as C
+import qualified Data.Binary.Put as P
 
 type NodeID = N.Word160
 type Infohash = N.Word160
@@ -34,13 +35,21 @@ type ErrorReason = B.ByteString
 
 data Error = Error ErrorCode ErrorReason
 
+encodeWord160 :: N.Word160 -> P.Put
+encodeWord160 (N.Word160 w1 w2 w3 w4 w5) = do
+    P.putWord32be w1
+    P.putWord32be w2
+    P.putWord32be w3
+    P.putWord32be w4
+    P.putWord32be w5
+
 encodeKVs :: [(BVal, BVal)] -> B.ByteString
 encodeKVs = bencode . BDict . M.fromList
-
 encodeQuery :: Query -> B.ByteString
 encodeQuery (PingQ tid self) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
+  -- TODO convert this to a BStr of the Word160 in network-byte-order with encodeWord160
   , (BStr "id", BInt $ N.toInteger self)
   , (BStr "q", BStr "ping")
     ]

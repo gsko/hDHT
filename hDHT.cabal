@@ -20,7 +20,8 @@ library
                      , containers >=0.5.5.1
                      , parsec >=3.1.5
                      , attoparsec
-                     , network >= 2.5.0.0
+                     , binary
+                     , network 
                      , natural-numbers >= 0.1.2.0
                      , time >= 1.4.2
   default-language:    Haskell2010
@@ -34,6 +35,7 @@ Executable hDHT
                      , containers
                      , bytestring
                      , network
+                     , binary
                      , attoparsec
   default-language:    Haskell2010
 
