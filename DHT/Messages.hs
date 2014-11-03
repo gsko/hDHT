@@ -53,17 +53,19 @@ encodeKVs = bencode . BDict . M.fromList
 encodeQuery :: Query -> B.ByteString
 encodeQuery (PingQ tid self) = encodeKVs [
     (BStr "y", BStr "q")
-  , (BStr "a", BDict $ M.fromList [(BStr "id", BStr . N.toBS $ self)])
+  , (BStr "a", BDict $ M.fromList [
+        (BStr "id", BStr . N.toBS $ self)
+        ])
   , (BStr "t", BStr tid)
   , (BStr "q", BStr "ping")
     ]
 encodeQuery (FindNodeQ tid self targetNode) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
+  , (BStr "q", BStr "find_node")
   , (BStr "a", BDict $ M.fromList [
         (BStr "id", BStr . N.toBS $ self)
-      , (BStr "q", BStr "find_node")
-      , (BStr "target", BInt . N.toInteger $ targetNode)
+      , (BStr "target", BStr . N.toBS $ targetNode)
       ])
     ]
 encodeQuery (GetPeersQ tid self targetInfohash) = encodeKVs [

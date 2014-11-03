@@ -27,10 +27,10 @@ main = do
     sock <- socket (addrFamily addrInfo) Datagram defaultProtocol
      
     -- Send the query
-    -- sent <- sendTo sock pingQuery serverAddr
-    -- printf "%s <-out- (%u bytes) \"%s\"\n" (show serverAddr) sent pingQuery 
     let tid = "bobo" :: B.ByteString
-    sendMessage sock (PingQ tid $ N.fromInteger 0x7857627872756918275927593768395039686912) serverAddr
+    --sendMessage sock (PingQ tid $ N.fromInteger 0x7857627872756918275927593768395039686912) serverAddr
+    let fn = FindNodeQ tid (N.fromInteger 0x009030915885103850983109) (N.fromInteger 0x0060938116830591)
+    sendMessage sock fn serverAddr
 
     -- Receive the response
     (buf, recvAddr) <- recvFrom sock 1500
