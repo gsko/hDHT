@@ -60,25 +60,31 @@ encodeQuery (PingQ tid self) = encodeKVs [
 encodeQuery (FindNodeQ tid self targetNode) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
-  , (BStr "id", BStr . N.toBS $ self)
-  , (BStr "q", BStr "find_node")
-  , (BStr "target", BInt . N.toInteger $ targetNode)
+  , (BStr "a", BDict $ M.fromList [
+        (BStr "id", BStr . N.toBS $ self)
+      , (BStr "q", BStr "find_node")
+      , (BStr "target", BInt . N.toInteger $ targetNode)
+      ])
     ]
 encodeQuery (GetPeersQ tid self targetInfohash) = encodeKVs [
     (BStr "y", BStr "q")
-  , (BStr "t", BStr tid)
-  , (BStr "id", BStr . N.toBS $ self)
   , (BStr "q", BStr "get_peers")
-  , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+  , (BStr "t", BStr tid)
+  , (BStr "a", BDict $ M.fromList [
+        (BStr "id", BStr . N.toBS $ self)
+      , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+      ])
     ]
 encodeQuery (AnnouncePeerQ tid self targetInfohash port token) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
-  , (BStr "id", BStr . N.toBS $ self)
   , (BStr "q", BStr "announce_peer")
-  , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
-  , (BStr "port", BInt . toInteger $ port)
-  , (BStr "token", BStr token)
+  , (BStr "a", BDict $ M.fromList [
+        (BStr "id", BStr . N.toBS $ self)
+      , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+      , (BStr "port", BInt . toInteger $ port)
+      , (BStr "token", BStr token)
+      ])
     ]
     
 encodeResponse :: Response -> B.ByteString
