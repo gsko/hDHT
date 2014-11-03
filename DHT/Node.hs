@@ -2,6 +2,9 @@ module DHT.Node where
 
 import Data.Word
 import Data.Bits
+import qualified Data.ByteString as B
+import qualified Data.ByteString.Lazy as BL
+import Data.Binary.Put
 
 -- Word160 : 160 bits = 20 bytes = 5 * 4 byte words = 5 Word32's
 data Word160 = Word160 !Word32 !Word32 !Word32 !Word32 !Word32
@@ -12,6 +15,16 @@ instance Bounded Word160 where
     maxBound = Word160 m m m m m
         where m :: Word32
               m = maxBound :: Word32
+
+toBS :: Word160 -> B.ByteString
+toBS w = head . BL.toChunks . runPut . putBS $ w
+    where putBS :: Word160 -> Put
+          putBS (Word160 a b c d e) = do
+            putWord32be a
+            putWord32be b
+            putWord32be c
+            putWord32be d
+            putWord32be e
 
 data Node = Node {
     id :: Word160

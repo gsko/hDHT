@@ -43,34 +43,38 @@ encodeWord160 (N.Word160 w1 w2 w3 w4 w5) = do
     P.putWord32be w4
     P.putWord32be w5
 
+intLog :: Int -> Int -> Int 
+intLog 0 _ = 0 
+intLog 1 _ = 0 
+intLog n b = 1 + intLog (div n b) b
+
 encodeKVs :: [(BVal, BVal)] -> B.ByteString
 encodeKVs = bencode . BDict . M.fromList
 encodeQuery :: Query -> B.ByteString
 encodeQuery (PingQ tid self) = encodeKVs [
     (BStr "y", BStr "q")
+  , (BStr "a", BDict $ M.fromList [(BStr "id", BStr . N.toBS $ self)])
   , (BStr "t", BStr tid)
-  -- TODO convert this to a BStr of the Word160 in network-byte-order with encodeWord160
-  , (BStr "id", BInt $ N.toInteger self)
   , (BStr "q", BStr "ping")
     ]
 encodeQuery (FindNodeQ tid self targetNode) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
-  , (BStr "id", BInt $ N.toInteger self)
+  , (BStr "id", BStr . N.toBS $ self)
   , (BStr "q", BStr "find_node")
   , (BStr "target", BInt . N.toInteger $ targetNode)
     ]
 encodeQuery (GetPeersQ tid self targetInfohash) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
-  , (BStr "id", BInt $ N.toInteger self)
+  , (BStr "id", BStr . N.toBS $ self)
   , (BStr "q", BStr "get_peers")
   , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
     ]
 encodeQuery (AnnouncePeerQ tid self targetInfohash port token) = encodeKVs [
     (BStr "y", BStr "q")
   , (BStr "t", BStr tid)
-  , (BStr "id", BInt $ N.toInteger self)
+  , (BStr "id", BStr . N.toBS $ self)
   , (BStr "q", BStr "announce_peer")
   , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
   , (BStr "port", BInt . toInteger $ port)
