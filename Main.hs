@@ -29,7 +29,7 @@ main = do
     -- Send the query
     let tid = "bobo" :: B.ByteString
     --sendMessage sock (PingQ tid $ N.fromInteger 0x7857627872756918275927593768395039686912) serverAddr
-    let fn = FindNodeQ tid (N.fromInteger 0x009030915885103850983109) (N.fromInteger 0x0060938116830591)
+    let fn = GetPeersQ tid (N.fromInteger 0x009030915885103850983109) (N.fromInteger 0x0060938116830591)
     sendMessage sock fn serverAddr
 
     -- Receive the response

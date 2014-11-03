@@ -74,7 +74,7 @@ encodeQuery (GetPeersQ tid self targetInfohash) = encodeKVs [
   , (BStr "t", BStr tid)
   , (BStr "a", BDict $ M.fromList [
         (BStr "id", BStr . N.toBS $ self)
-      , (BStr "info_hash", BInt . N.toInteger $ targetInfohash)
+      , (BStr "info_hash", BStr . N.toBS $ targetInfohash)
       ])
     ]
 encodeQuery (AnnouncePeerQ tid self targetInfohash port token) = encodeKVs [
