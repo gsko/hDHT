@@ -15,6 +15,8 @@ type Port = W.Word16
 type Token = B.ByteString
 type Peer = B.ByteString
 
+data KRPC = KQuery Query | KResponse Response | KError Error
+
 data Query =
     -- All queries start with a transaction id and originating node id
     PingQ B.ByteString NodeID
@@ -98,3 +100,6 @@ encodeResponse (AnnouncePeersR tid from) = undefined
 
 encodeError :: Error -> B.ByteString
 encodeError (Error code reason) = undefined
+
+decodeMessage :: B.ByteString -> KRPC
+decodeMessage _ = undefined
