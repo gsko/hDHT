@@ -101,5 +101,15 @@ encodeResponse (AnnouncePeersR tid from) = undefined
 encodeError :: Error -> B.ByteString
 encodeError (Error code reason) = undefined
 
-decodeMessage :: B.ByteString -> KRPC
-decodeMessage _ = undefined
+encodeKRPC :: KRPC -> B.ByteString
+encodeKRPC (KQuery q) = encodeQuery q
+encodeKRPC (KResponse r) = encodeResponse r
+encodeKRPC (KError e) = encodeError e
+
+decodeKRPC :: B.ByteString -> KRPC
+decodeKRPC buf = extractKRPC . bdecode $ buf
+
+extractKRPC :: BVal ->
+extractKRPC (BDict (M.Map key val)) = undefined
+    where key :: BStr 
+extractKRPC _ = error "There is no BDict to build a KRPC from"
