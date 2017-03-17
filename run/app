@@ -1,0 +1,3 @@
+#!/bin/sh
+echo -e "\nrunning hDHT\n"
+./dist/build/hDHT/hDHT

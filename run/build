@@ -1,0 +1,6 @@
+#!/bin/sh
+# guarantee a clean build
+echo -e "\nbuilding app\n"
+rm ./dist/build/hDHT/hDHT
+cabal configure
+cabal build

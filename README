@@ -1,0 +1,10 @@
+hDHT
+====
+-- To build:
+> ./run/build
+
+-- To run hDHT
+> ./run/app
+
+-- To run tests
+> ./run/tests
