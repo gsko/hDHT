@@ -1,1 +1,0 @@
-* In DHT.Bencode, replace all String's for ByteString's.

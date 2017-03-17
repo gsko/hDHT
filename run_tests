@@ -1,5 +1,6 @@
 #!/bin/sh
-rm -r dist
+clear
+echo -e "\nbuilding tests\n\n"
 cabal configure --enable-tests
 cabal build
 ./dist/build/reference/reference
